@@ -1,0 +1,33 @@
+:root {
+  --bg: #f6f6f4; --card: #fff; --text: #1a1a1a; --muted: #6b6b6b; --line: #e3e3df; --accent: #1d9bf0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #15171a; --card: #1e2125; --text: #e9e9e9; --muted: #9a9ea4; --line: #2e3238; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.6 system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", sans-serif; }
+main { max-width: 620px; margin: 32px auto; padding: 0 16px 48px; }
+header { display: flex; gap: 14px; align-items: center; margin-bottom: 20px; }
+header img { width: 44px; height: 44px; }
+h1 { font-size: 20px; margin: 0; }
+.sub { margin: 0; color: var(--muted); font-size: 13px; }
+section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+h2 { font-size: 14px; margin: 0 0 10px; }
+.row { display: grid; grid-template-columns: 1fr minmax(0, 220px) 56px; gap: 10px; align-items: center; margin: 8px 0; }
+.row:has(input[type="text"]) { grid-template-columns: 1fr minmax(0, 276px); }
+.radio, .check { display: flex; gap: 8px; align-items: center; margin: 6px 0; cursor: pointer; }
+input[type="text"] { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: inherit; font: inherit; }
+input.key { width: 48px; text-align: center; text-transform: uppercase; justify-self: start; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="range"]:disabled { opacity: .4; }
+output { font-variant-numeric: tabular-nums; color: var(--muted); text-align: right; }
+.hint { color: var(--muted); font-size: 12.5px; margin: 4px 0 8px; }
+.path { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; overflow-wrap: anywhere; }
+code { font-size: 12px; }
+.stats { color: var(--muted); margin: 10px 0; }
+button { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: inherit; font: inherit; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+.status { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); margin: 0; color: var(--accent); font-weight: 600; }
+@media (max-width: 480px) { .row, .row:has(input[type="text"]) { grid-template-columns: 1fr; } output { text-align: left; } }

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "X Image Saver",
+  "version": "1.1.0",
+  "description": "Xの画像をマウスオーバーで原寸保存し、NSFW/SFWを自動判定してフォルダ分けします（判定はPC内で完結）。",
+  "permissions": ["downloads", "storage", "unlimitedStorage", "offscreen"],
+  "host_permissions": [
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "https://pbs.twimg.com/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["defaults.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": { "default_title": "X Image Saver の設定", "default_icon": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" } },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}

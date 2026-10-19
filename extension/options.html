@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>X Image Saver 設定</title>
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/48.png" alt="">
+    <div>
+      <h1>X Image Saver</h1>
+      <p class="sub">マウスオーバーで原寸保存・NSFW/SFW自動仕分け</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>保存のしかた</h2>
+    <label class="radio"><input type="radio" name="mode" value="hover"> マウスを画像に乗せて待つと自動保存</label>
+    <label class="radio"><input type="radio" name="mode" value="key"> 画像に乗せてキーを押したときだけ保存</label>
+    <div class="row">
+      <label for="hoverDelay">自動保存までの時間</label>
+      <input type="range" id="hoverDelay" min="200" max="3000" step="100">
+      <output id="hoverDelayOut"></output>
+    </div>
+    <div class="row">
+      <label for="saveKey">即保存キー（どちらのモードでも有効）</label>
+      <input type="text" id="saveKey" maxlength="1" class="key">
+    </div>
+  </section>
+
+  <section>
+    <h2>NSFW判定</h2>
+    <div class="row">
+      <label for="threshold">判定のきびしさ</label>
+      <input type="range" id="threshold" min="0.1" max="0.9" step="0.05">
+      <output id="thresholdOut"></output>
+    </div>
+    <p class="hint">数値を下げるほど、少しでも疑わしい画像をNSFWに入れます。迷ったら0.5のままで。</p>
+    <label class="check"><input type="checkbox" id="countSexy"> 「きわどい（水着・露出多め）」もNSFWに含める</label>
+    <p class="hint">判定はこのPCのブラウザ内で行い、画像を外部に送ることはありません。精度はおよそ9割で、イラストや肌色の多い写真は間違えることがあります。</p>
+  </section>
+
+  <section>
+    <h2>保存先</h2>
+    <p class="hint">Chromeのダウンロードフォルダの中に作られます。</p>
+    <div class="row"><label for="baseFolder">フォルダ名</label><input type="text" id="baseFolder"></div>
+    <div class="row"><label for="sfwFolder">SFW用</label><input type="text" id="sfwFolder"></div>
+    <div class="row"><label for="nsfwFolder">NSFW用</label><input type="text" id="nsfwFolder"></div>
+    <label class="check"><input type="checkbox" id="perUserFolder"> さらに投稿者ごとのフォルダに分ける</label>
+    <p class="path">保存例：<code id="example"></code></p>
+  </section>
+
+  <section>
+    <h2>その他</h2>
+    <label class="check"><input type="checkbox" id="skipSaved"> 一度保存した画像は保存しない</label>
+    <label class="check"><input type="checkbox" id="showBadge"> 保存結果を画像の上に表示する</label>
+    <div class="stats" id="stats"></div>
+    <button id="clear" type="button">保存履歴をリセット</button>
+  </section>
+
+  <p id="status" class="status" role="status"></p>
+</main>
+<script src="defaults.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

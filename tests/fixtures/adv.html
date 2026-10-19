@@ -1,0 +1,55 @@
+<!doctype html><html><body style="margin:0;background:#000;color:#fff">
+<!-- A: format parameter tampering (path traversal / arbitrary parameter injection) -->
+<article style="height:220px">
+ <a href="/evil_user/status/111/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="evil" src="https://pbs.twimg.com/media/EVILaaa111?format=..%2F..%2F..%2Fpwn&name=small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- B: legacy URL format (extension in path, no format) -->
+<article style="height:220px">
+ <a href="/old_user/status/222/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="legacy" src="https://pbs.twimg.com/media/LEGACYbbb222.png:small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- C: post X has flagged sensitive (blurred) -->
+<article style="height:220px">
+ <a href="/nsfw_user/status/333/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto" style="overflow:hidden">
+   <div style="filter:blur(32px);position:absolute;width:200px;height:200px"><img id="blurred" src="https://pbs.twimg.com/media/BLURccc333?format=jpg&name=small" style="width:200px;height:200px"></div>
+   <div style="position:relative;width:200px;height:200px;background:rgba(0,0,0,.3)">Sensitive content</div>
+  </div></a>
+</article>
+<!-- D: image inside a quoted post -->
+<article style="height:240px">
+ <a href="/outer_user/status/444"><time>1h</time></a>
+ <div role="link" style="border:1px solid #555">
+  <span>@quoted_user</span><time>2h</time>
+  <div data-testid="tweetPhoto"><img id="quoted" src="https://pbs.twimg.com/media/QUOTEddd444?format=jpg&name=small" style="width:200px;height:200px"></div>
+ </div>
+</article>
+<!-- E: an image that disappears right after hovering (SPA navigation / virtual scroll) -->
+<article style="height:220px" id="vanishArt">
+ <a href="/v_user/status/555/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="vanish" src="https://pbs.twimg.com/media/VANISHeee555?format=jpg&name=small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- F: image at the window edge (moving the mouse out of the window) -->
+<article style="height:220px">
+ <a href="/edge_user/status/666/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="edge" src="https://pbs.twimg.com/media/EDGEfff666?format=jpg&name=small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- G: corrupt image data (classification fails) -->
+<article style="height:220px">
+ <a href="/bad_user/status/777/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="broken" src="https://pbs.twimg.com/media/BROKENggg777?format=jpg&name=small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- H: username that's dangerous as a Windows filename (can't actually occur on X, but checking sanitization) -->
+<article style="height:220px">
+ <a href="/CON/status/888/photo/1" style="display:block;width:200px;height:200px">
+  <div data-testid="tweetPhoto"><img id="con" src="https://pbs.twimg.com/media/CONhhh888?format=jpg&name=small" style="width:200px;height:200px"></div></a>
+</article>
+<!-- I: text input (pressing S while typing must not save) -->
+<input id="box" style="position:fixed;right:10px;top:10px;width:200px" placeholder="typing">
+<div id="xkeys" style="position:fixed;right:10px;top:40px">x-shortcut:none</div>
+<script>
+ // Mimic X's own keyboard shortcut (S = share) to see whether it conflicts
+ document.addEventListener('keydown', e => { if (e.key === 's') document.getElementById('xkeys').textContent = 'x-shortcut:fired'; });
+</script>
+</body></html>
