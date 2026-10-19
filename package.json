@@ -1,16 +1,20 @@
 {
   "name": "x-image-saver",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Chrome extension: save X images on hover and auto-sort into NSFW/SFW folders (on-device classification)",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild src/offscreen-src.js --bundle --minify --format=iife --platform=browser --outfile=extension/offscreen.js",
-    "package": "npm run build && cd extension && zip -qr ../x-image-saver.zip ."
+    "build": "esbuild src/offscreen-src.js --bundle --minify --format=esm --platform=browser --outfile=extension/offscreen.js && node tools/copy-wasm.mjs",
+    "model": "python3 tools/convert_marqo.py",
+    "package": "npm run build && cd extension && zip -qr ../x-image-saver.zip .",
+    "test": "cd tests && python3 features_test.py && python3 adversarial_test.py"
   },
   "dependencies": {
     "@tensorflow/tfjs": "4.22.0",
-    "nsfwjs": "4.3.0"
+    "@tensorflow/tfjs-backend-wasm": "4.22.0",
+    "nsfwjs": "4.3.0",
+    "onnxruntime-web": "1.30.0"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

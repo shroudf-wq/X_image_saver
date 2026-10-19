@@ -1,5 +1,5 @@
 # Third-party notices
-`extension/offscreen.js` はビルド済みファイルで、以下のライブラリを含みます。各ライブラリのライセンスに従って再配布しています。
+`extension/offscreen.js`・`extension/ort/`・`extension/tfjs/` はビルド済みファイル、`extension/models/marqo/` は変換済みの学習済みモデルで、以下のライブラリとモデルを含みます。各ライセンスに従って再配布しています。
 NSFW判定モデル（MobileNetV2 Mid）は nsfwjs に含まれるもので、nsfwjs と同じ MIT ライセンスです。
 
 ## nsfwjs 4.3.0 — MIT
@@ -397,6 +397,39 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
+
+## onnxruntime-web 1.30.0 — MIT
+`extension/ort/ort-wasm-simd-threaded.wasm` を含みます。
+```
+MIT License
+
+Copyright (c) Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+ONNX Runtime が利用しているサードパーティのコードについては https://github.com/microsoft/onnxruntime/blob/main/ThirdPartyNotices.txt を参照してください。
+
+## @tensorflow/tfjs-backend-wasm 4.22.0 — Apache-2.0
+`extension/tfjs/*.wasm` を含みます。Copyright Google LLC. Licensed under the Apache License, Version 2.0 (全文は末尾).
+
+## Marqo/nsfw-image-detection-384 — Apache-2.0
+`extension/models/marqo/model.onnx` は https://huggingface.co/Marqo/nsfw-image-detection-384 の学習済みの重みを ONNX 形式に変換したものです（変換スクリプト：`tools/convert_marqo.py`。重みの値は変更していません）。Copyright Marqo. Licensed under the Apache License, Version 2.0 (全文は末尾).
 
 ## Apache License 2.0（全文）
 

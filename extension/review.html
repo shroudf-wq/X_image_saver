@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>X Image Saver 振り分け</title>
+<link rel="stylesheet" href="options.css">
+<link rel="stylesheet" href="review.css">
+</head>
+<body>
+<main class="wide">
+  <header>
+    <img src="icons/48.png" alt="">
+    <div>
+      <h1>振り分け</h1>
+      <p class="sub">要確認の画像を仕分けたり、間違いを直したりします。直した結果は判定の学習に使われます。</p>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button data-filter="review" class="on">要確認</button>
+    <button data-filter="unchecked">未確認</button>
+    <button data-filter="corrected">直したもの</button>
+    <button data-filter="all">すべて</button>
+  </nav>
+
+  <div class="bar">
+    <span id="count"></span>
+    <label class="check"><input type="checkbox" id="blur"> サムネイルをぼかす（マウスを乗せると表示）</label>
+    <button id="confirmAll" type="button" hidden>表示中をすべて「正しい」として確認</button>
+  </div>
+  <p class="hint">画像にマウスを乗せて <kbd>1</kbd> でSFW、<kbd>2</kbd> でNSFW にもできます。今と同じほうを押すと「正しい」として確認されます。</p>
+
+  <div id="grid" class="grid"></div>
+  <p id="empty" class="empty" hidden>ここに表示する画像はありません。</p>
+  <p id="status" class="status" role="status"></p>
+</main>
+<script src="defaults.js"></script>
+<script src="review.js"></script>
+</body>
+</html>

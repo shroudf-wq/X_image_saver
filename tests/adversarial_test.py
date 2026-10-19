@@ -213,4 +213,5 @@ async def main():
         proc.terminate()
     print(f"\n== {sum(1 for r in RESULTS if r[1])}/{len(RESULTS)} PASS ==")
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

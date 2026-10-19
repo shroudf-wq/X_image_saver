@@ -16,6 +16,14 @@
   </header>
 
   <section>
+    <h2>判定の精度</h2>
+    <div id="accuracy" class="big"></div>
+    <p id="accuracyNote" class="hint"></p>
+    <p id="modelInfo" class="hint"></p>
+    <p><a class="button" href="review.html?filter=review" target="_blank">振り分けページを開く</a></p>
+  </section>
+
+  <section>
     <h2>保存のしかた</h2>
     <label class="radio"><input type="radio" name="mode" value="hover"> マウスを画像に乗せて待つと自動保存</label>
     <label class="radio"><input type="radio" name="mode" value="key"> 画像に乗せてキーを押したときだけ保存</label>
@@ -24,10 +32,10 @@
       <input type="range" id="hoverDelay" min="200" max="3000" step="100">
       <output id="hoverDelayOut"></output>
     </div>
-    <div class="row">
-      <label for="saveKey">即保存キー（どちらのモードでも有効）</label>
-      <input type="text" id="saveKey" maxlength="1" class="key">
-    </div>
+    <div class="row"><label for="saveKey">保存キー（自動判定で保存）</label><input type="text" id="saveKey" maxlength="1" class="key"></div>
+    <div class="row"><label for="sfwKey">SFWキー（SFWとして保存／SFWに直す）</label><input type="text" id="sfwKey" maxlength="1" class="key"></div>
+    <div class="row"><label for="nsfwKey">NSFWキー（NSFWとして保存／NSFWに直す）</label><input type="text" id="nsfwKey" maxlength="1" class="key"></div>
+    <p class="hint">キーは画像にマウスを乗せているときだけ反応します。</p>
   </section>
 
   <section>
@@ -38,8 +46,17 @@
       <output id="thresholdOut"></output>
     </div>
     <p class="hint">数値を下げるほど、少しでも疑わしい画像をNSFWに入れます。迷ったら0.5のままで。</p>
+    <label class="check"><input type="checkbox" id="useReview"> 判定が微妙な画像は「要確認」フォルダに入れる</label>
+    <div class="row">
+      <label for="reviewBand">「微妙」とみなす幅</label>
+      <input type="range" id="reviewBand" min="0.05" max="0.4" step="0.05">
+      <output id="reviewBandOut"></output>
+    </div>
+    <p class="hint">幅を広げると、SFW・NSFWに振り分けられた画像の精度は上がりますが、要確認に回る画像が増えます。</p>
     <label class="check"><input type="checkbox" id="countSexy"> 「きわどい（水着・露出多め）」もNSFWに含める</label>
-    <p class="hint">判定はこのPCのブラウザ内で行い、画像を外部に送ることはありません。精度はおよそ9割で、イラストや肌色の多い写真は間違えることがあります。</p>
+    <label class="check"><input type="checkbox" id="learn"> 直した結果から自分の基準を覚える</label>
+    <p id="learnInfo" class="hint"></p>
+    <p class="hint">判定はこのPCのブラウザ内で行い、画像を外部に送ることはありません。</p>
   </section>
 
   <section>
@@ -48,6 +65,7 @@
     <div class="row"><label for="baseFolder">フォルダ名</label><input type="text" id="baseFolder"></div>
     <div class="row"><label for="sfwFolder">SFW用</label><input type="text" id="sfwFolder"></div>
     <div class="row"><label for="nsfwFolder">NSFW用</label><input type="text" id="nsfwFolder"></div>
+    <div class="row"><label for="reviewFolder">要確認用</label><input type="text" id="reviewFolder"></div>
     <label class="check"><input type="checkbox" id="perUserFolder"> さらに投稿者ごとのフォルダに分ける</label>
     <p class="path">保存例：<code id="example"></code></p>
   </section>
@@ -57,7 +75,10 @@
     <label class="check"><input type="checkbox" id="skipSaved"> 一度保存した画像は保存しない</label>
     <label class="check"><input type="checkbox" id="showBadge"> 保存結果を画像の上に表示する</label>
     <div class="stats" id="stats"></div>
-    <button id="clear" type="button">保存履歴をリセット</button>
+    <div class="buttons">
+      <button id="resetLearning" type="button">学習をリセット</button>
+      <button id="clear" type="button">保存履歴をリセット</button>
+    </div>
   </section>
 
   <p id="status" class="status" role="status"></p>

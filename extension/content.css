@@ -22,6 +22,7 @@
 .xsaver-sfw { background: #1f8a4c; }
 .xsaver-nsfw { background: #c2185b; }
 .xsaver-unsorted { background: #8a6d1f; }
+.xsaver-review { background: #b26a00; }
 .xsaver-skip { background: #555; }
 .xsaver-error { background: #b3261e; }
 .xsaver-wait { background: rgba(30,30,30,.85); }

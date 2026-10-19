@@ -103,25 +103,29 @@
   // ---- 保存 ----
   const sessionDone = new Map(); // mediaId -> label（このタブで保存済み）
 
-  async function save(img) {
+  async function save(img, label = null) {
     const item = infoFromImg(img);
     if (!item) return;
-    if (settings.skipSaved && sessionDone.has(item.mediaId)) return;
+    if (!label && settings.skipSaved && sessionDone.has(item.mediaId)) return;
     sessionDone.set(item.mediaId, "…");
-    const waiting = badge(img, "判定中…", "wait");
+    const waiting = badge(img, label ? "保存中…" : "判定中…", "wait");
     let res;
     try {
-      res = await chrome.runtime.sendMessage({ type: "save", item });
+      res = await chrome.runtime.sendMessage(label ? { type: "label", item, label } : { type: "save", item });
     } catch (e) {
       res = { status: "error", error: "拡張機能が再読み込みされました。ページを更新してください" };
     }
     waiting?.remove();
+    const text = (l) => XSAVER_LABEL_TEXT[l] || l;
     if (res?.status === "saved") {
       sessionDone.set(item.mediaId, res.label);
-      badge(img, "保存 " + res.label, res.label.toLowerCase());
+      badge(img, "保存 " + text(res.label), res.label.toLowerCase());
+    } else if (res?.status === "relabeled") {
+      sessionDone.set(item.mediaId, res.label);
+      badge(img, text(res.label) + " に変更", res.label.toLowerCase());
     } else if (res?.status === "skipped") {
       sessionDone.set(item.mediaId, res.label);
-      badge(img, "保存済み " + res.label, "skip");
+      badge(img, "保存済み " + text(res.label), "skip");
     } else if (res?.status === "busy") {
       sessionDone.delete(item.mediaId); // 別タブで処理中。結果は向こうで出る
     } else {
@@ -178,10 +182,15 @@
   document.addEventListener("mouseleave", () => { mouse = { x: -1, y: -1 }; schedule(); });
   window.addEventListener("blur", () => { clearTimeout(timer); hideRing(); hovered = null; });
 
-  // ホバー中にキーで即保存（どのモードでも有効）
+  // ホバー中のキー操作（どのモードでも有効）
+  //   保存キー(S)       : すぐ保存（自動判定）
+  //   SFWキー(1)/NSFWキー(2): そのフォルダに保存。保存済みなら判定を直す（直した結果は学習に使う）
   document.addEventListener("keydown", (e) => {
     if (!hovered || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
-    if (e.key.toLowerCase() !== String(settings.saveKey || "s").toLowerCase()) return;
+    const k = e.key.toLowerCase();
+    const is = (name, def) => k === String(settings[name] || def).toLowerCase();
+    const label = is("sfwKey", "1") ? "SFW" : is("nsfwKey", "2") ? "NSFW" : null;
+    if (!label && !is("saveKey", "s")) return;
     const t = e.target;
     if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
     e.preventDefault();
@@ -190,6 +199,6 @@
     hideRing();
     const id = hovered.src.match(MEDIA_RE)[1];
     sessionDone.delete(id); // キー操作は明示的なので、このタブ内の重複スキップは無視
-    save(hovered);
+    save(hovered, label);
   }, true);
 })();

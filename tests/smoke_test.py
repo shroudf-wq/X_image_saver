@@ -83,7 +83,7 @@ async def main():
               return {land:a, shapes:b};})()""")
             print("scores:", json.dumps(scores, indent=1))
             print("\n".join(logs))
-            await sw.evaluate("chrome.storage.sync.set({threshold:0, perUserFolder:true}).then(()=>chrome.storage.local.clear())")
+            await sw.evaluate("chrome.storage.sync.set({threshold:0, useReview:false, perUserFolder:true}).then(()=>chrome.storage.local.clear())")
             await page.wait_for_timeout(300)
             await page.mouse.move(box2["x"] + 60, box2["y"] + 60)
             await page.keyboard.press("s")
@@ -103,4 +103,5 @@ async def main():
     for root, _, files in os.walk(DL):
         for f in files: print("file on disk:", os.path.relpath(os.path.join(root, f), DL), os.path.getsize(os.path.join(root, f)))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
